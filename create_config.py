@@ -8,7 +8,7 @@ MOVING_SPEED_REGISTER = 'moving_speed'
 GOAL_ACCELERATION_REGISTER = 'goal_acceleration'
 
 config_path = r'C:\Users\User\PycharmProjects\GiMiCHI\configs'
-config_path = r'/Users/montequie/Dropbox/IDC - CS/miLAB/BUD_BUTTER/configs'
+config_path = r'/Users/montequie/Dropbox/IDC - CS/miLAB/BUD/configs'
 
 motor_turn_names = ["turnone", "turntwo", "turnthree", "turnfour"]
 motor_lean_names = ["leanone", "leantwo", "leanthree", "leanfour"]
@@ -22,19 +22,23 @@ for motor_turn_name in motor_turn_names:
 
 def set_config(config_name='config'):
     config = {}
+    config['IP'] = '192.168.0.106'
     config['MOTOR_NAMES'] = motor_turn_names + motor_lean_names
     # TODO: add real animations
     play_animation_key = {'key': 'a',
                           'module': 'experiment',
                           'function': '_play_animation',
+                          'help': 'play animation - test',
                           'args': 'test'}
     torque_key = {'key': 't',
                   'module': 'experiment',
                   'function': '_disable_torque',
+                  'help': 'disable torque for all turn motors',
                   'args': motor_turn_names}
     fix_positions_key = {'key': 'f',
                          'module': 'experiment',
                          'function': '_fix_goal_position',
+                         'help': 'fix positions for all turn motors to 0 with minimum speed and acceleration',
                          # TODO: fix also the lean ones?
                          'args': fixed_position_dict}
     config['SHORTCUTS'] = [play_animation_key, torque_key, fix_positions_key]
