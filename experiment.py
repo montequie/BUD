@@ -1,11 +1,10 @@
 import time
-
 import keyboard
 from butter.mas.api import HttpClient
 
 TORQUE_REGISTER = 'torque_enable'
-TORQUE_OFF = '0'  # Turn off the torque
-TORQUE_ON = '1'  # Turn on the torque and lock EEPROM area
+TORQUE_OFF = '0'
+TORQUE_ON = '1'
 
 GOAL_POSITION_REGISTER = 'goal_position'
 # TODO: test for correct name
@@ -62,25 +61,23 @@ def _disable_torque(motor_names):
 
 def _play_animation(animation_name=None):
     if not animation_name:
+        # TODO: print animation list
         animation_name = input('Which animation would you like to play? press ENTER\n')
     if _are_you_sure(F'play animation \'{animation_name}\''):
         butterHttpClient.playAnimation(animationName=animation_name)
 
 
-def _pause_animation():
-    if _are_you_sure(F'pause animation'):
-        butterHttpClient.pauseAnimation()
-
-
+# TODO: are you sure to delete _are_you_sure?
 def _are_you_sure(action_name):
+    # TODO: test print and keyboard not on the same line
+    time.sleep(0.01)
     print(F'{action_name}\n')
     return True
-    time.sleep(0.01)
-    run_animation = input(F'are you sure you want to {action_name}? y/n\n')
-    if run_animation.lower() == 'y':
-        return True
-    else:
-        return False
+    # run_animation = input(F'are you sure you want to {action_name}? y/n\n')
+    # if run_animation.lower() == 'y':
+    #     return True
+    # else:
+    #     return False
 
 
 class Experiment:
@@ -92,9 +89,8 @@ class Experiment:
 
     def run(self, config):
         global butterHttpClient
-        # butter_ip = input(
-        #     'Please insert the robot IP address and press ENTER, should look like 192.168.0.X where X is a number\n')
-        butter_ip = '192.168.0.106'
+        self.config = config
+        butter_ip = config['IP']
         butterHttpClient = HttpClient(butter_ip)
         self.init_keyboard_shortcuts(config=config)
         while self.state:
@@ -106,6 +102,11 @@ class Experiment:
     def _quit_experiment(self):
         self.state = False
 
+    def _help(self):
+        print('Shortcut keys available:')
+        for shortcut in self.config['SHORTCUTS']:
+            print('\r{shortcut[key]} -> {shortcut[help]}')
+
     def init_keyboard_shortcuts(self, config=None):
         for shortcut in config['SHORTCUTS']:
             import_module = __import__(shortcut['module'])
@@ -113,4 +114,5 @@ class Experiment:
             function_name = shortcut['function']
             args = shortcut['args']
             keyboard.add_hotkey(key, getattr(import_module, function_name), args=args)
-        keyboard.add_hotkey('q', getattr('experiment', '_quit_experiment'))
+        keyboard.add_hotkey('q', self._quit_experiment())
+        keyboard.add_hotkey('h', self._help())
