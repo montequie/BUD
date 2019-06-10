@@ -17,11 +17,11 @@ for motor_turn_name in motor_turn_names:
                                             MOVING_SPEED_REGISTER: 300,
                                             GOAL_POSITION_REGISTER: 0,
                                             }
-# for motor_turn_name in motor_lean_names:
-#     fixed_position_dict[motor_turn_name] = {GOAL_ACCELERATION_REGISTER: 10,
-#                                             MOVING_SPEED_REGISTER: 300,
-#                                             GOAL_POSITION_REGISTER: 2000,
-#                                             }
+for motor_turn_name in motor_lean_names:
+    fixed_position_dict[motor_turn_name] = {GOAL_ACCELERATION_REGISTER: 10,
+                                            MOVING_SPEED_REGISTER: 300,
+                                            GOAL_POSITION_REGISTER: 2100,
+                                            }
 
 
 def set_config(config_name='config'):

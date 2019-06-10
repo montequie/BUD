@@ -38,13 +38,13 @@ def _fix_goal_position(fixed_positions):
     :param fixed_positions: dict, keys are motor names, values are dicts of registers and value
     '''
     if _are_you_sure('fix goal position'):
-        _set_joint_mode(list(fixed_positions.keys()))
-        _set_multi_turn_mode(list(fixed_positions.keys()))
+        # _set_joint_mode(list(fixed_positions.keys()))
+        # _set_multi_turn_mode(list(fixed_positions.keys()))
         for motor_name in fixed_positions.keys():
             for register_name in fixed_positions[motor_name].keys():
-                # TODO: make sure the acceleration is needed
                 butterHttpClient.setMotorRegister(motor_name, register_name,
                                                   str(fixed_positions[motor_name][register_name]))
+                # time.sleep(0.01)
         print('finished fixing')
 
 
