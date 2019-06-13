@@ -13,20 +13,20 @@ motor_lean_names = ["leanone", "leantwo", "leanthree", "leanfour"]
 
 fixed_position_dict = {}
 for motor_turn_name in motor_turn_names:
-    fixed_position_dict[motor_turn_name] = {GOAL_ACCELERATION_REGISTER: 10,
-                                            MOVING_SPEED_REGISTER: 300,
-                                            GOAL_POSITION_REGISTER: 0,
+    fixed_position_dict[motor_turn_name] = {GOAL_ACCELERATION_REGISTER: 1,
+                                            MOVING_SPEED_REGISTER: 1,
+                                            GOAL_POSITION_REGISTER: 2048,
                                             }
-for motor_turn_name in motor_lean_names:
-    fixed_position_dict[motor_turn_name] = {GOAL_ACCELERATION_REGISTER: 10,
-                                            MOVING_SPEED_REGISTER: 300,
-                                            GOAL_POSITION_REGISTER: 2100,
-                                            }
+# for motor_turn_name in motor_lean_names:
+#     fixed_position_dict[motor_turn_name] = {GOAL_ACCELERATION_REGISTER: 10,
+#                                             MOVING_SPEED_REGISTER: 300,
+#                                             GOAL_POSITION_REGISTER: 2100,
+#                                             }
 
 
 def set_config(config_name='config'):
     config = {}
-    config['IP'] = '192.168.0.107'
+    config['IP'] = '192.168.0.109'
     config['MOTOR_NAMES'] = motor_turn_names + motor_lean_names
     play_Attentive_44_key = {'key': '1',
                              'module': 'experiment',
@@ -43,6 +43,11 @@ def set_config(config_name='config'):
                             'function': '_play_animation',
                             'help': 'play animation - Welcome_New',
                             'args': 'Welcome_New'}
+    play_Farewell_New_key = {'key': '4',
+                            'module': 'experiment',
+                            'function': '_play_animation',
+                            'help': 'play animation - Farewell_New',
+                            'args': 'Farewell_new'}
     torque_key = {'key': 't',
                   'module': 'experiment',
                   'function': '_disable_torque',
@@ -54,7 +59,7 @@ def set_config(config_name='config'):
                          'help': 'fix positions for all turn motors to 0 with minimum speed and acceleration',
                          # TODO: fix also the lean ones?
                          'args': fixed_position_dict}
-    config['SHORTCUTS'] = [play_Attentive_44_key, play_Follow_44_key, play_Welcome_New_key, torque_key,
+    config['SHORTCUTS'] = [play_Attentive_44_key, play_Farewell_New_key, play_Follow_44_key, play_Welcome_New_key, torque_key,
                            fix_positions_key]
     with open(os.path.join(config_path, F'{config_name}.json'), 'w') as f:
         json.dump(config, f)

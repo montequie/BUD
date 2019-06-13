@@ -3,6 +3,8 @@ import time
 import keyboard
 from butter.mas.api import HttpClient
 
+from create_config import MOVING_SPEED_REGISTER
+
 TORQUE_REGISTER = 'torque_enable'
 TORQUE_OFF = '0'
 TORQUE_ON = '1'
@@ -38,13 +40,14 @@ def _fix_goal_position(fixed_positions):
     :param fixed_positions: dict, keys are motor names, values are dicts of registers and value
     '''
     if _are_you_sure('fix goal position'):
-        # _set_joint_mode(list(fixed_positions.keys()))
-        # _set_multi_turn_mode(list(fixed_positions.keys()))
+        _set_joint_mode(list(fixed_positions.keys()))
+        _set_multi_turn_mode(list(fixed_positions.keys()))
         for motor_name in fixed_positions.keys():
             for register_name in fixed_positions[motor_name].keys():
                 butterHttpClient.setMotorRegister(motor_name, register_name,
                                                   str(fixed_positions[motor_name][register_name]))
-                # time.sleep(0.01)
+            butterHttpClient.setMotorRegister(motor_name, MOVING_SPEED_REGISTER, str(0))
+            # time.sleep(0.01)
         print('finished fixing')
 
 
@@ -75,6 +78,7 @@ def _are_you_sure(action_name):
     #     return True
     # else:
     #     return False
+
 
 def _help(config):
     print('Shortcut keys available:')
@@ -114,4 +118,4 @@ class Experiment:
             args = shortcut['args']
             keyboard.add_hotkey(key, getattr(import_module, function_name), args=(args,))
         # keyboard.add_hotkey('q', self._quit_experiment())
-        keyboard.add_hotkey('h', getattr(import_module, '_help'), args=(config, ))
+        keyboard.add_hotkey('h', getattr(import_module, '_help'), args=(config,))
