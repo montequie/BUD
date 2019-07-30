@@ -1,5 +1,5 @@
 import time
-
+import json
 import keyboard
 from butter.mas.api import HttpClient
 
@@ -8,7 +8,7 @@ from create_config import MOVING_SPEED_REGISTER
 TORQUE_REGISTER = 'torque_enable'
 TORQUE_OFF = '0'
 TORQUE_ON = '1'
-
+_THRESHOLD = 25
 CW_ANGLE_LIMIT_REGISTER = 'cw_angle_limit'
 CCW_ANGLE_LIMIT_REGISTER = 'ccw_angle_limit'
 _MULTI_TURN_MODE_DICT = {
@@ -42,12 +42,24 @@ def _fix_goal_position(fixed_positions):
     if _are_you_sure('fix goal position'):
         _set_joint_mode(list(fixed_positions.keys()))
         _set_multi_turn_mode(list(fixed_positions.keys()))
+        to_be_fix_motors = []
         for motor_name in fixed_positions.keys():
             for register_name in fixed_positions[motor_name].keys():
                 butterHttpClient.setMotorRegister(motor_name, register_name,
                                                   str(fixed_positions[motor_name][register_name]))
+            to_be_fix_motors.append((motor_name, 2048))
+
+        while any(to_be_fix_motors):
+            for motor_name, fixed_position in to_be_fix_motors:
+                try:
+                    if abs(int(json.loads(butterHttpClient.getMotorRegister(motor_name, 'present_position').text)['Result'][
+                               -5:-1].strip()) + _THRESHOLD) >= fixed_position:
+                        to_be_fix_motors.remove((motor_name, fixed_position))
+                except:
+                    to_be_fix_motors.remove((motor_name, fixed_position))
+
+        for motor_name in fixed_positions.keys():
             butterHttpClient.setMotorRegister(motor_name, MOVING_SPEED_REGISTER, str(0))
-            # time.sleep(0.01)
         print('finished fixing')
 
 
