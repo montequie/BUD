@@ -1,12 +1,9 @@
 import json
 import os
 
-
-GOAL_POSITION_REGISTER = 'goal_position'
-MOVING_SPEED_REGISTER = 'moving_speed'
-GOAL_ACCELERATION_REGISTER = 'goal_acceleration'
-
 # config_path = r'/Users/montequie/Dropbox/IDC - CS/miLAB/BUD/configs'
+from essentials.dynamixel_basics import GOAL_ACCELERATION_REGISTER, MOVING_SPEED_REGISTER, GOAL_POSITION_REGISTER
+
 config_path = r'C:\Users\User\PycharmProjects\BUD\configs'
 
 motor_turn_names = ["turnone", "turntwo", "turnthree", "turnfour"]

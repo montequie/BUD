@@ -20,22 +20,14 @@ Bla Bla
 Bla
 
 ```
-$ sudo yum install gcc openssl-devel bzip2-devel libffi libffi-devel
-$ cd /root 
-$ wget https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tgz
-$ tar xzf Python-3.7.0.tgz
-$ cd Python-3.7.0
-$ ./configure --enable-optimizations
-$ sudo make altinstall
-$ rm -f /root/Python-3.7.0.tgz
+asdf
 ```
 
 Bla
 
 Now, Install *pip* and *butter.mas.api*
 ```
-$ pip3.7 install --upgrade pip --user
-$ pip3.7 install butter.mas.api --user
+asd
 ```
 
 ## Configuration
