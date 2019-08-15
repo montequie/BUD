@@ -1,7 +1,7 @@
 import json
 import os
 
-3
+
 GOAL_POSITION_REGISTER = 'goal_position'
 MOVING_SPEED_REGISTER = 'moving_speed'
 GOAL_ACCELERATION_REGISTER = 'goal_acceleration'

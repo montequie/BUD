@@ -1,5 +1,5 @@
 from create_config import get_config, set_config
-from experiment import Experiment
+from essentials.experiment import Experiment
 
 
 def main(config_path=None):
