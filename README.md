@@ -36,7 +36,7 @@ Every experiment has a configuration file AKA `config`.
 The config file is a [.JSON](https://en.wikipedia.org/wiki/JSON) file (key: value), contains data of keyboard shortcuts, motor names and more.
 
 ### Config File
-This is a 'this' BUD config file, contains Butter's IP address, 4 motor names and 3 keyboard shortcuts:
+This is an example *BUD* config file, contains Butter's IP address, 4 motor names and 3 keyboard shortcuts:
 ```
 {
   "IP": "192.168.0.111",

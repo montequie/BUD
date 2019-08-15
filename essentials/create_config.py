@@ -22,39 +22,39 @@ def set_config(config_name='config'):
     config['IP'] = '192.168.0.111'
     config['MOTOR_NAMES'] = motor_turn_names + motor_lean_names
     play_Welcome_New_key = {'key': '1',
-                            'module': 'experiment',
-                            'function': '_play_animation',
+                            'module': 'dynamixel_basics',
+                            'function': 'play_animation',
                             'help': 'play animation - Welcome_New',
                             'args': 'Welcome_New'}
     play_Follow_44_key = {'key': '2',
-                          'module': 'experiment',
-                          'function': '_play_animation',
+                          'module': 'dynamixel_basics',
+                          'function': 'play_animation',
                           'help': 'play animation - Follow_44',
                           'args': 'Follow_44'}
     play_Attentive_44_key = {'key': '3',
-                             'module': 'experiment',
-                             'function': '_play_animation',
+                             'module': 'dynamixel_basics',
+                             'function': 'play_animation',
                              'help': 'play animation - Attentive_44',
                              'args': 'Attentive_44'}
     play_Farewell_New_key = {'key': '4',
-                             'module': 'experiment',
-                             'function': '_play_animation',
+                             'module': 'dynamixel_basics',
+                             'function': 'play_animation',
                              'help': 'play animation - Farewell_New',
                              'args': 'Farewell_new'}
     play_Welcome_starting_pose_key = {'key': '5',
-                                      'module': 'experiment',
-                                      'function': '_play_animation',
+                                      'module': 'dynamixel_basics',
+                                      'function': 'play_animation',
                                       'help': 'play animation - Welcome_starting_pose',
                                       'args': 'Welcome_starting_pose'}
 
     torque_key = {'key': 't',
-                  'module': 'experiment',
+                  'module': 'dynamixel_basics',
                   'function': '_disable_torque',
                   'help': 'disable torque for all turn motors',
                   'args': motor_turn_names}
     fix_positions_key = {'key': 'f',
-                         'module': 'experiment',
-                         'function': '_fix_goal_position',
+                         'module': 'experiment_bud',
+                         'function': 'fix_goal_position',
                          'help': 'fix positions for all turn motors to 0 with minimum speed and acceleration',
                          # TODO: fix also the lean ones?
                          'args': fixed_position_dict}

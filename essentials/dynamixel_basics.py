@@ -1,3 +1,4 @@
+import json
 import time
 
 from butter.mas.api import HttpClient
@@ -5,6 +6,7 @@ from butter.mas.api import HttpClient
 GOAL_POSITION_REGISTER = 'goal_position'
 MOVING_SPEED_REGISTER = 'moving_speed'
 GOAL_ACCELERATION_REGISTER = 'goal_acceleration'
+PRESENT_POSITION_REGISTER = 'present_position'
 
 TORQUE_REGISTER = 'torque_enable'
 TORQUE_OFF = '0'
@@ -20,13 +22,18 @@ JOINT_MODE_DICT = {
     CCW_ANGLE_LIMIT_REGISTER: 4095}
 
 
+# TODO: maybe rename class?
 class Dynamixel(object):
 
     def __init__(self, motor_names, ip):
         self.motor_names = motor_names
         self.butter_http_client = HttpClient(ip)
 
-    def _disable_torque(self, motor_names):
+    # TODO:
+    def go_to_position_in_x_time(self):
+        raise NotImplementedError
+
+    def disable_torque(self, motor_names):
         '''
         disable torque for the given motor names
         :type motor_names: [str]
@@ -38,7 +45,7 @@ class Dynamixel(object):
                                                          value=TORQUE_OFF)
                 print('Torque disabled')
 
-    def _play_animation(self, animation_name=None):
+    def play_animation(self, animation_name=None):
         '''
         :type animation_name: str
         :return: None
@@ -49,7 +56,17 @@ class Dynamixel(object):
         if self._are_you_sure(F'play animation \'{animation_name}\''):
             self.butter_http_client.playAnimation(animationName=animation_name)
 
-    def _set_multi_turn_mode(self, motor_names):
+    def get_present_position(self, motor_name):
+        '''
+        return the present position of a given motor
+        :type motor_name:
+        :return:
+        '''
+        return int(
+            json.loads(self.butter_http_client.getMotorRegister(motor_name, PRESENT_POSITION_REGISTER).text)['Result'][
+            -5:-1].strip())
+
+    def set_multi_turn_mode(self, motor_names):
         '''
         set the given motor names to  multi turn mode
         :type motor_names: [str]
@@ -60,7 +77,7 @@ class Dynamixel(object):
                 self.butter_http_client.setMotorRegister(motor_name, register_name,
                                                          str(MULTI_TURN_MODE_DICT[register_name]))
 
-    def _set_joint_mode(self, motor_names):
+    def set_joint_mode(self, motor_names):
         '''
         set the given motor names to joint mode
         :type motor_names: [str]
