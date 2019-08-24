@@ -2,7 +2,7 @@ import sys
 
 from essentials.create_config import get_config, set_config
 from essentials.dynamixel_basics import MOVING_SPEED_REGISTER, GOAL_POSITION_REGISTER
-from essentials.experiment import Experiment
+from essentials.generic_experiment import Experiment
 
 _THRESHOLD = 25
 
