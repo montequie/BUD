@@ -46,7 +46,24 @@ def set_config(config_name='config'):
                                       'function': 'play_animation',
                                       'help': 'play animation - Welcome_starting_pose',
                                       'args': 'Welcome_starting_pose'}
-
+    sequence_key = {
+                    "key": "s",
+                    "module": "experiment",
+                    "function": "play_sequence",
+                    "help": "play sequence - sequence_one",
+                    "args": [
+                            {"module": "dynamixel_basics",
+                             "function": "_play_animation",
+                             "args": "Welcome_New",
+                             "time": 23,
+                             },
+                            {"module": "dynamixel_basics",
+                             "function": "_disable_torque",
+                             "args": ["turnone", "turntwo"],
+                             "time": 1
+                             },
+                        ]
+                    }
     torque_key = {'key': 't',
                   'module': 'dynamixel_basics',
                   'function': 'disable_torque',
@@ -59,8 +76,7 @@ def set_config(config_name='config'):
                          # TODO: fix also the lean ones?
                          'args': fixed_position_dict}
     config['SHORTCUTS'] = [play_Attentive_44_key, play_Follow_44_key, play_Welcome_New_key, play_Farewell_New_key,
-                           play_Welcome_starting_pose_key,
-                           torque_key, fix_positions_key]
+                           play_Welcome_starting_pose_key, torque_key, fix_positions_key, sequence_key]
     with open(os.path.join(config_path, F'{config_name}.json'), 'w') as f:
         json.dump(config, f)
     return os.path.join(config_path, F'{config_name}.json')
