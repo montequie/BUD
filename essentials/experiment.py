@@ -1,9 +1,9 @@
+import sys
 import time
 
 import keyboard
 
 from essentials.dynamixel_basics import Dynamixel
-import sys
 
 
 class Experiment(Dynamixel):
@@ -16,6 +16,12 @@ class Experiment(Dynamixel):
         self.init_keyboard_shortcuts()
         while self.state:
             time.sleep(0.001)
+
+    def play_sequence(self, sequence):
+        for operation in sequence:
+            getattr(operation["module"], operation["function"])(operation["args"])
+            if "time" in operation:
+                time.sleep(int(operation["time"]))
 
     def _help(self):
         print('Shortcut keys available:')
