@@ -42,7 +42,7 @@ class BudExperiment(Experiment):
                         to_be_fix_motors.remove((motor_name, fixed_position))
 
             for motor_name in fixed_positions.keys():
-                self.butter_http_client.setMotorRegister(motor_name, MOVING_SPEED_REGISTER, str(0))
+                self.dynamixel_client.setMotorRegister(motor_name, MOVING_SPEED_REGISTER, str(0))
             print('finished fixing')
 
 

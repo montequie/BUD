@@ -27,7 +27,7 @@ class Dynamixel(object):
 
     def __init__(self, motor_names, ip):
         self.motor_names = motor_names
-        self.butter_http_client = HttpClient(ip)
+        self.dynamixel_client = HttpClient(ip)
 
     # TODO:
     def go_to_position_in_x_time(self):
@@ -41,8 +41,8 @@ class Dynamixel(object):
         '''
         if self._are_you_sure('disable torque'):
             for motor_name in motor_names:
-                self.butter_http_client.setMotorRegister(motorName=motor_name, registerName=TORQUE_REGISTER,
-                                                         value=TORQUE_OFF)
+                self.dynamixel_client.setMotorRegister(motorName=motor_name, registerName=TORQUE_REGISTER,
+                                                       value=TORQUE_OFF)
                 print('Torque disabled')
 
     def play_animation(self, animation_name=None):
@@ -54,15 +54,20 @@ class Dynamixel(object):
             # TODO: print animation list
             animation_name = input('Which animation would you like to play? press ENTER\n')
         if self._are_you_sure(F'play animation \'{animation_name}\''):
-            self.butter_http_client.playAnimation(animationName=animation_name)
+            self.dynamixel_client.playAnimation(animationName=animation_name)
 
     def set_goal_acceleration_speed_position(self, motor_name, gasp_dict):
-        self.butter_http_client.setMotorRegister(motor_name, GOAL_ACCELERATION_REGISTER,
-                                                 str(gasp_dict[GOAL_ACCELERATION_REGISTER]))
-        self.butter_http_client.setMotorRegister(motor_name, MOVING_SPEED_REGISTER,
-                                                 str(gasp_dict[MOVING_SPEED_REGISTER]))
-        self.butter_http_client.setMotorRegister(motor_name, GOAL_POSITION_REGISTER,
-                                                 str(gasp_dict[GOAL_POSITION_REGISTER]))
+        '''
+        :type motor_name: str
+        :type gasp_dict: dict [str, int]
+        :return:
+        '''
+        self.dynamixel_client.setMotorRegister(motor_name, GOAL_ACCELERATION_REGISTER,
+                                               str(gasp_dict[GOAL_ACCELERATION_REGISTER]))
+        self.dynamixel_client.setMotorRegister(motor_name, MOVING_SPEED_REGISTER,
+                                               str(gasp_dict[MOVING_SPEED_REGISTER]))
+        self.dynamixel_client.setMotorRegister(motor_name, GOAL_POSITION_REGISTER,
+                                               str(gasp_dict[GOAL_POSITION_REGISTER]))
 
     def get_present_position(self, motor_name):
         '''
@@ -71,7 +76,7 @@ class Dynamixel(object):
         :return:
         '''
         return int(
-            json.loads(self.butter_http_client.getMotorRegister(motor_name, PRESENT_POSITION_REGISTER).text)['Result'][
+            json.loads(self.dynamixel_client.getMotorRegister(motor_name, PRESENT_POSITION_REGISTER).text)['Result'][
             -5:-1].strip())
 
     def set_multi_turn_mode(self, motor_names):
@@ -82,8 +87,8 @@ class Dynamixel(object):
         '''
         for motor_name in motor_names:
             for register_name in MULTI_TURN_MODE_DICT.keys():
-                self.butter_http_client.setMotorRegister(motor_name, register_name,
-                                                         str(MULTI_TURN_MODE_DICT[register_name]))
+                self.dynamixel_client.setMotorRegister(motor_name, register_name,
+                                                       str(MULTI_TURN_MODE_DICT[register_name]))
 
     def set_joint_mode(self, motor_names):
         '''
@@ -93,8 +98,8 @@ class Dynamixel(object):
         '''
         for motor_name in motor_names:
             for register_name in JOINT_MODE_DICT.keys():
-                self.butter_http_client.setMotorRegister(motor_name, register_name,
-                                                         str(JOINT_MODE_DICT[register_name]))
+                self.dynamixel_client.setMotorRegister(motor_name, register_name,
+                                                       str(JOINT_MODE_DICT[register_name]))
 
     # TODO: are you sure to delete _are_you_sure?
     @staticmethod
