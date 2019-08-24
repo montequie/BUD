@@ -56,6 +56,14 @@ class Dynamixel(object):
         if self._are_you_sure(F'play animation \'{animation_name}\''):
             self.butter_http_client.playAnimation(animationName=animation_name)
 
+    def set_goal_acceleration_speed_position(self, motor_name, gasp_dict):
+        self.butter_http_client.setMotorRegister(motor_name, GOAL_ACCELERATION_REGISTER,
+                                                 str(gasp_dict[GOAL_ACCELERATION_REGISTER]))
+        self.butter_http_client.setMotorRegister(motor_name, MOVING_SPEED_REGISTER,
+                                                 str(gasp_dict[MOVING_SPEED_REGISTER]))
+        self.butter_http_client.setMotorRegister(motor_name, GOAL_POSITION_REGISTER,
+                                                 str(gasp_dict[GOAL_POSITION_REGISTER]))
+
     def get_present_position(self, motor_name):
         '''
         return the present position of a given motor

@@ -1,22 +1,22 @@
 import sys
 
 from essentials.create_config import get_config, set_config
-from essentials.dynamixel_basics import MOVING_SPEED_REGISTER
+from essentials.dynamixel_basics import MOVING_SPEED_REGISTER, GOAL_POSITION_REGISTER
 from essentials.experiment import Experiment
 
 _THRESHOLD = 25
 
+
 class BudExperiment(Experiment):
     name = 'BUD'
 
-    def __init__(self, name, stages, config):
-        self.name = name
+    def __init__(self, stages, config):
         # self.current_stage_index = 1  # TODO:
         # self.stages = stages  # TODO:
         super().__init__(BudExperiment, config=config)
 
     def anagram_game(self):
-        raise NotImplementedError
+        raise NotImplementedError  # TODO:
 
     def fix_goal_position(self, fixed_positions):
         '''
@@ -28,13 +28,10 @@ class BudExperiment(Experiment):
             self.set_joint_mode(list(fixed_positions.keys()))
             self.set_multi_turn_mode(list(fixed_positions.keys()))
             to_be_fix_motors = []
+
             for motor_name in fixed_positions.keys():
-                for register_name in fixed_positions[motor_name].keys():
-                    # TODO: move to dynamixel_basics
-                    self.butter_http_client.setMotorRegister(motor_name, register_name,
-                                                             str(fixed_positions[motor_name][register_name]))
-                # TODO: make it config
-                to_be_fix_motors.append((motor_name, 2048))
+                self.set_goal_acceleration_speed_position(motor_name, fixed_positions[motor_name])
+                to_be_fix_motors.append((motor_name, fixed_positions[motor_name][GOAL_POSITION_REGISTER]))
 
             while any(to_be_fix_motors):
                 for motor_name, fixed_position in to_be_fix_motors:
@@ -54,8 +51,8 @@ def main():
     if sys.argv[1]:
         config_path = set_config(config_name=sys.argv[1])
     stages = []
-    experiment = Experiment(name='BUD', stages=stages)
-    experiment.run(get_config(sys.argv[1]))
+    experiment = BudExperiment(stages=stages, config=get_config('BUD'))
+    experiment.run()
 
 
 if __name__ == '__main__':
