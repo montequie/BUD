@@ -9,15 +9,15 @@
   "SHORTCUTS": [
     {
       "key": "1",
-      "module": "experiment",
-      "function": "_play_animation",
+      "module": "dynamixel_basics",
+      "function": "play_animation",
       "help": "play animation - Welcome_New",
       "args": "Welcome_New"
     },
     {
       "key": "t",
-      "module": "experiment",
-      "function": "_disable_torque",
+      "module": "dynamixel_basics",
+      "function": "disable_torque",
       "help": "disable torque for all turn motors",
       "args": [
         "turnone",
@@ -28,8 +28,8 @@
     },
     {
       "key": "f",
-      "module": "experiment",
-      "function": "_fix_goal_position",
+      "module": "experiment_bud",
+      "function": "fix_goal_position",
       "help": "fix positions for all turn motors to 0 with minimum speed and acceleration",
       "args": {
         "turnone": {

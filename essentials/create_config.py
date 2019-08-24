@@ -1,9 +1,9 @@
 import json
 import os
 
-# config_path = r'/Users/montequie/Dropbox/IDC - CS/miLAB/BUD/configs'
 from essentials.dynamixel_basics import GOAL_ACCELERATION_REGISTER, MOVING_SPEED_REGISTER, GOAL_POSITION_REGISTER
 
+# config_path = r'/Users/montequie/Dropbox/IDC - CS/miLAB/BUD/configs'
 config_path = r'C:\Users\User\PycharmProjects\BUD\configs'
 
 motor_turn_names = ["turnone", "turntwo", "turnthree", "turnfour"]
@@ -49,7 +49,7 @@ def set_config(config_name='config'):
 
     torque_key = {'key': 't',
                   'module': 'dynamixel_basics',
-                  'function': '_disable_torque',
+                  'function': 'disable_torque',
                   'help': 'disable torque for all turn motors',
                   'args': motor_turn_names}
     fix_positions_key = {'key': 'f',
