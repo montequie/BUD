@@ -13,4 +13,3 @@ def main(config_path=None):
 
 if __name__ == '__main__':
     main()
-    # main(config_path=r'C:\Users\User\PycharmProjects\GiMiCHI\configs')

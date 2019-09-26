@@ -1,6 +1,7 @@
 import time
 import json
 import keyboard
+from bud_game import start_game
 from butter.mas.api import HttpClient
 
 from create_config import MOVING_SPEED_REGISTER
@@ -8,7 +9,7 @@ from create_config import MOVING_SPEED_REGISTER
 TORQUE_REGISTER = 'torque_enable'
 TORQUE_OFF = '0'
 TORQUE_ON = '1'
-_THRESHOLD = 25
+_THRESHOLD = 50
 CW_ANGLE_LIMIT_REGISTER = 'cw_angle_limit'
 CCW_ANGLE_LIMIT_REGISTER = 'ccw_angle_limit'
 _MULTI_TURN_MODE_DICT = {
@@ -45,15 +46,19 @@ def _fix_goal_position(fixed_positions):
         to_be_fix_motors = []
         for motor_name in fixed_positions.keys():
             for register_name in fixed_positions[motor_name].keys():
+
+                print (motor_name)
+                print (register_name)
+                print(str(fixed_positions[motor_name][register_name]))
                 butterHttpClient.setMotorRegister(motor_name, register_name,
                                                   str(fixed_positions[motor_name][register_name]))
+                # print(abs(int(json.loads(butterHttpClient.getMotorRegister(motor_name, 'present_position').text)['Result'][-5:-1].strip())))
+                # butterHttpClient.setMotorRegister(motor_name, 'multi_turn_offset', "0")
             to_be_fix_motors.append((motor_name, 2048))
-
         while any(to_be_fix_motors):
             for motor_name, fixed_position in to_be_fix_motors:
                 try:
-                    if abs(int(json.loads(butterHttpClient.getMotorRegister(motor_name, 'present_position').text)['Result'][
-                               -5:-1].strip()) + _THRESHOLD) >= fixed_position:
+                    if abs(int(json.loads(butterHttpClient.getMotorRegister(motor_name, 'present_position').text)['Result'][-5:-1].strip()) + _THRESHOLD) >= fixed_position:
                         to_be_fix_motors.remove((motor_name, fixed_position))
                 except:
                     to_be_fix_motors.remove((motor_name, fixed_position))
@@ -70,6 +75,17 @@ def _disable_torque(motor_names):
             print('Torque disabled')
 
 
+def _start_game(motor_names):
+    # set position of motors to 0
+    # _fix_goal_position(fixed_positions)
+
+    # disable torque
+    print("disabling torque to motors")
+    _disable_torque(motor_names)
+    print("\n")
+    # begin game
+    start_game(butterHttpClient)
+
 def _play_animation(animation_name=None):
     if not animation_name:
         # TODO: print animation list
@@ -81,7 +97,7 @@ def _play_animation(animation_name=None):
 # TODO: are you sure to delete _are_you_sure?
 def _are_you_sure(action_name):
     # TODO: test print and keyboard not on the same line
-    time.sleep(0.01)
+    # time.sleep(0.01)
     print(F'{action_name}\n')
     return True
 
